@@ -1,0 +1,22 @@
+{
+  "name": "breath-studio",
+  "version": "1.0.0",
+  "description": "breath studio",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaajaE/breath-studio.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PaajaE/breath-studio/issues"
+  },
+  "homepage": "https://github.com/PaajaE/breath-studio#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
