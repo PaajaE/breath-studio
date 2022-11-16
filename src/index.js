@@ -1,10 +1,11 @@
+let ctx;
 const xc = 300;
 const yc = 300;
-const r = 100;
+let r = 50;
+let dr = 0.3;
 const pi = Math.PI;
-const startAngle = 0;
 
-const d1 = (r * 3) / Math.pow(3, 0.5);
+const dim1q = 3 / Math.pow(3, 0.5);
 
 const getX = (rad, dim) => {
   return xc + dim * Math.cos(rad);
@@ -14,103 +15,87 @@ const getY = (rad, dim) => {
   return yc + dim * Math.sin(rad);
 };
 
-window.addEventListener("load", (event) => {
-  const ctx = document.getElementById("canvas").getContext("2d");
+const circleArray = [];
 
-  ctx.strokeStyle = `rgb(0,220,200)`;
-  ctx.beginPath();
-  ctx.arc(xc, yc, r, 0, pi * 2);
-  ctx.arc(xc, yc, r * 2, 0, pi * 2);
-  ctx.stroke();
+class Circle {
+  constructor(fi, dimq, radius, angleStart, angleEnd, strokeStyle) {
+    this.fi = fi;
+    this.dimq = dimq;
+    this.cx = fi !== null ? getX(fi, dimq * r) : xc;
+    this.cy = fi !== null ? getY(fi, dimq * r) : yc;
+    this.r = radius;
+    this.angleStart = angleStart;
+    this.angleEnd = angleEnd;
+    this.strokeStyle = strokeStyle;
+  }
 
-  ctx.beginPath();
-  ctx.strokeStyle = `rgb(220,220,0)`;
-  ctx.arc(getX(0, r), getY(0, r), r, startAngle, pi * 2, false);
-  ctx.arc(getX(pi / 3, r), getY(pi / 3, r), r, startAngle, pi * 2, false);
-  ctx.arc(
-    getX((pi / 3) * 2, r),
-    getY((pi / 3) * 2, r),
-    r,
-    startAngle,
-    pi * 2,
-    false
-  );
-  ctx.arc(getX(pi, r), getY(pi, r), r, startAngle, pi * 2, false);
-  ctx.arc(
-    getX((pi / 3) * 4, r),
-    getY((pi / 3) * 4, r),
-    r,
-    startAngle,
-    pi * 2,
-    false
-  );
-  ctx.arc(
-    getX((pi / 3) * 5, r),
-    getY((pi / 3) * 5, r),
-    r,
-    startAngle,
-    pi * 2,
-    false
-  );
+  draw() {
+    ctx.beginPath();
+    ctx.strokeStyle = this.strokeStyle;
+    ctx.lineWidth = 6;
+    ctx.arc(this.cx, this.cy, this.r, this.angleStart, this.angleEnd);
+    ctx.stroke();
+  }
 
-  console.log(d1);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.strokeStyle = `rgb(220,0,220)`;
+  update(r, updatePosition) {
+    this.r = r;
 
-  ctx.arc(getX(pi / 6, d1), getY(pi / 6, d1), r, startAngle, pi * 2, false);
-  ctx.arc(
-    getX((pi / 6) * 3, d1),
-    getY((pi / 6) * 3, d1),
-    r,
-    startAngle,
-    pi * 2,
-    false
-  );
-  ctx.arc(
-    getX((pi / 6) * 5, d1),
-    getY((pi / 6) * 5, d1),
-    r,
-    startAngle,
-    pi * 2,
-    false
-  );
-  ctx.arc(
-    getX((pi / 6) * 7, d1),
-    getY((pi / 6) * 7, d1),
-    r,
-    startAngle,
-    pi * 2,
-    false
-  );
-  ctx.arc(
-    getX((pi / 6) * 9, d1),
-    getY((pi / 6) * 9, d1),
-    r,
-    startAngle,
-    pi * 2,
-    false
-  );
-  ctx.arc(
-    getX((pi / 6) * 11, d1),
-    getY((pi / 6) * 11, d1),
-    r,
-    startAngle,
-    pi * 2,
-    false
-  );
+    if (updatePosition) {
+      this.cx = getX(this.fi, this.dimq * this.r);
+      this.cy = getY(this.fi, this.dimq * this.r);
+    }
 
-  ctx.stroke();
+    this.draw();
+  }
+}
 
-  //   for (let i = 0; i < 6; i++) {
-  //     for (let j = 0; j < 6; j++) {
-  //       ctx.strokeStyle = `rgb(
-  //             0,
-  //             ${Math.floor(255 - 42.5 * i)},
-  //             ${Math.floor(255 - 42.5 * j)})`;
-  //       ctx.beginPath();
-  //       ctx.arc(12.5 + j * 25, 12.5 + i * 25, 10, 0, pi * 2, true);
-  //       ctx.stroke();
-  //     }
-  //   }
+function animate() {
+  requestAnimationFrame(animate);
+
+  ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+  if (r <= 20 || r >= 100) {
+    dr = -dr;
+  }
+
+  r += dr;
+
+  for (i = 0; i < circleArray.length; i++) {
+    if (i === 0) {
+      circleArray[i].update(r, false);
+    } else {
+      circleArray[i].update(r, true);
+    }
+  }
+}
+
+window.addEventListener("load", () => {
+  ctx = document.getElementById("canvas").getContext("2d");
+
+  //   ctx.beginPath();
+  let strokeStyle = "rgb(0,220,200)";
+  //   circleArray.push(new Circle(xc, yc, 2 * r, 0, pi * 2, strokeStyle));
+  circleArray.push(new Circle(null, r, 0, pi * 2, strokeStyle));
+
+  strokeStyle = "rgba(73,222,155,87)";
+  circleArray.push(new Circle(0, 1, r, 0, pi * 2, strokeStyle));
+  circleArray.push(new Circle((pi / 3) * 1, 1, r, 0, pi * 2, strokeStyle));
+  circleArray.push(new Circle((pi / 3) * 2, 1, r, 0, pi * 2, strokeStyle));
+  circleArray.push(new Circle((pi / 3) * 3, 1, r, 0, pi * 2, strokeStyle));
+  circleArray.push(new Circle((pi / 3) * 4, 1, r, 0, pi * 2, strokeStyle));
+  circleArray.push(new Circle((pi / 3) * 5, 1, r, 0, pi * 2, strokeStyle));
+
+  strokeStyle = "rgba(67,177,230,90)";
+  circleArray.push(new Circle((pi / 6) * 1, dim1q, r, 0, pi * 2, strokeStyle));
+  circleArray.push(new Circle((pi / 6) * 3, dim1q, r, 0, pi * 2, strokeStyle));
+  circleArray.push(new Circle((pi / 6) * 5, dim1q, r, 0, pi * 2, strokeStyle));
+  circleArray.push(new Circle((pi / 6) * 7, dim1q, r, 0, pi * 2, strokeStyle));
+  circleArray.push(new Circle((pi / 6) * 9, dim1q, r, 0, pi * 2, strokeStyle));
+  circleArray.push(new Circle((pi / 6) * 11, dim1q, r, 0, pi * 2, strokeStyle));
+
+  for (i = 0; i < circleArray.length; i++) {
+    circleArray[i].draw();
+  }
+
+  animate();
 });
