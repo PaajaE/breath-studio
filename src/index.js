@@ -18,7 +18,7 @@ const getY = (rad, dim) => {
 const circleArray = [];
 
 class Circle {
-  constructor(fi, dimq, radius, angleStart, angleEnd, strokeStyle) {
+  constructor(fi, dimq, radius, angleStart, angleEnd, strokeStyle, fillStyle) {
     this.fi = fi;
     this.dimq = dimq;
     this.cx = fi !== null ? getX(fi, dimq * r) : xc;
@@ -27,6 +27,7 @@ class Circle {
     this.angleStart = angleStart;
     this.angleEnd = angleEnd;
     this.strokeStyle = strokeStyle;
+    this.fillStyle = fillStyle;
   }
 
   draw() {
@@ -35,6 +36,8 @@ class Circle {
     ctx.lineWidth = 6;
     ctx.arc(this.cx, this.cy, this.r, this.angleStart, this.angleEnd);
     ctx.stroke();
+    ctx.fillStyle = this.fillStyle;
+    ctx.fill();
   }
 
   update(r, updatePosition) {
@@ -74,24 +77,49 @@ window.addEventListener("load", () => {
 
   //   ctx.beginPath();
   let strokeStyle = "rgb(0,220,200)";
+  let fillStyle = "rgba(73,222,155,1)";
   //   circleArray.push(new Circle(xc, yc, 2 * r, 0, pi * 2, strokeStyle));
-  circleArray.push(new Circle(null, r, 0, pi * 2, strokeStyle));
+  circleArray.push(new Circle(null, 1, r, 0, pi * 2, strokeStyle, fillStyle));
 
-  strokeStyle = "rgba(73,222,155,87)";
-  circleArray.push(new Circle(0, 1, r, 0, pi * 2, strokeStyle));
-  circleArray.push(new Circle((pi / 3) * 1, 1, r, 0, pi * 2, strokeStyle));
-  circleArray.push(new Circle((pi / 3) * 2, 1, r, 0, pi * 2, strokeStyle));
-  circleArray.push(new Circle((pi / 3) * 3, 1, r, 0, pi * 2, strokeStyle));
-  circleArray.push(new Circle((pi / 3) * 4, 1, r, 0, pi * 2, strokeStyle));
-  circleArray.push(new Circle((pi / 3) * 5, 1, r, 0, pi * 2, strokeStyle));
+  strokeStyle = "rgba(73,222,155,0.87)";
+  fillStyle = "rgba(73,222,155,0.33)";
+  circleArray.push(new Circle(0, 1, r, 0, pi * 2, strokeStyle, fillStyle));
+  circleArray.push(
+    new Circle((pi / 3) * 1, 1, r, 0, pi * 2, strokeStyle, fillStyle)
+  );
+  circleArray.push(
+    new Circle((pi / 3) * 2, 1, r, 0, pi * 2, strokeStyle, fillStyle)
+  );
+  circleArray.push(
+    new Circle((pi / 3) * 3, 1, r, 0, pi * 2, strokeStyle, fillStyle)
+  );
+  circleArray.push(
+    new Circle((pi / 3) * 4, 1, r, 0, pi * 2, strokeStyle, fillStyle)
+  );
+  circleArray.push(
+    new Circle((pi / 3) * 5, 1, r, 0, pi * 2, strokeStyle, fillStyle)
+  );
 
-  strokeStyle = "rgba(67,177,230,90)";
-  circleArray.push(new Circle((pi / 6) * 1, dim1q, r, 0, pi * 2, strokeStyle));
-  circleArray.push(new Circle((pi / 6) * 3, dim1q, r, 0, pi * 2, strokeStyle));
-  circleArray.push(new Circle((pi / 6) * 5, dim1q, r, 0, pi * 2, strokeStyle));
-  circleArray.push(new Circle((pi / 6) * 7, dim1q, r, 0, pi * 2, strokeStyle));
-  circleArray.push(new Circle((pi / 6) * 9, dim1q, r, 0, pi * 2, strokeStyle));
-  circleArray.push(new Circle((pi / 6) * 11, dim1q, r, 0, pi * 2, strokeStyle));
+  strokeStyle = "rgba(67,177,230,0.90)";
+  fillStyle = "rgba(73,222,155,0.33)";
+  circleArray.push(
+    new Circle((pi / 6) * 1, dim1q, r, 0, pi * 2, strokeStyle, fillStyle)
+  );
+  circleArray.push(
+    new Circle((pi / 6) * 3, dim1q, r, 0, pi * 2, strokeStyle, fillStyle)
+  );
+  circleArray.push(
+    new Circle((pi / 6) * 5, dim1q, r, 0, pi * 2, strokeStyle, fillStyle)
+  );
+  circleArray.push(
+    new Circle((pi / 6) * 7, dim1q, r, 0, pi * 2, strokeStyle, fillStyle)
+  );
+  circleArray.push(
+    new Circle((pi / 6) * 9, dim1q, r, 0, pi * 2, strokeStyle, fillStyle)
+  );
+  circleArray.push(
+    new Circle((pi / 6) * 11, dim1q, r, 0, pi * 2, strokeStyle, fillStyle)
+  );
 
   for (i = 0; i < circleArray.length; i++) {
     circleArray[i].draw();
